@@ -24,21 +24,9 @@
  */
 package org.spongepowered.common.interfaces;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.gen.BiomeGenerator;
-import org.spongepowered.api.world.gen.GeneratorPopulator;
 
-import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.common.configuration.SpongeConfig;
-
-public interface IMixinWorld extends IPopulatorOwner {
-
-    SpongeConfig<SpongeConfig.WorldConfig> getWorldConfig();
-
-    void setWorldInfo(WorldInfo worldInfo);
-
-    void updateWorldGenerator();
+public interface IBiomeGenPlains {
     
-    IChunkProvider createChunkProvider(net.minecraft.world.World world, GeneratorPopulator generatorPopulator, BiomeGenerator biomeGenerator);
+    boolean hasSunflowers();
 
 }

@@ -24,6 +24,10 @@
  */
 package org.spongepowered.common.world.gen;
 
+import com.google.common.base.Optional;
+import org.spongepowered.api.world.biome.BiomeGenerationSettings;
+import org.spongepowered.api.world.biome.BiomeType;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import org.spongepowered.api.world.gen.BiomeGenerator;
@@ -112,6 +116,24 @@ public final class SpongeWorldGenerator implements WorldGenerator {
 
         this.baseGenerator = Preconditions.checkNotNull(generator);
         this.baseGeneratorChanged = true;
+    }
+
+    @Override
+    public Optional<BiomeGenerationSettings> getBiomeOverride(BiomeType type) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean isBiomeOverriden(BiomeType type) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void setBiomeOverride(BiomeType type, BiomeGenerationSettings settings) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

@@ -22,23 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.world.gen.builders;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.gen.BiomeGenerator;
-import org.spongepowered.api.world.gen.GeneratorPopulator;
+import net.minecraft.world.gen.feature.WorldGenCactus;
 
-import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.common.configuration.SpongeConfig;
+import static com.google.common.base.Preconditions.checkNotNull;
+import org.spongepowered.api.util.VariableAmount;
+import org.spongepowered.api.world.gen.populator.Cactus.Builder;
+import org.spongepowered.api.world.gen.populator.Cactus;
 
-public interface IMixinWorld extends IPopulatorOwner {
-
-    SpongeConfig<SpongeConfig.WorldConfig> getWorldConfig();
-
-    void setWorldInfo(WorldInfo worldInfo);
-
-    void updateWorldGenerator();
+public class CactusBuilder implements Cactus.Builder {
     
-    IChunkProvider createChunkProvider(net.minecraft.world.World world, GeneratorPopulator generatorPopulator, BiomeGenerator biomeGenerator);
+    private VariableAmount count;
+    
+    public CactusBuilder() {
+        reset();
+    }
+
+    @Override
+    public Builder cactiPerChunk(VariableAmount count) {
+        checkNotNull(count, "count");
+        this.count = count;
+        return this;
+    }
+
+    @Override
+    public Builder reset() {
+        this.count = VariableAmount.fixed(10);
+        return this;
+    }
+
+    @Override
+    public Cactus build() throws IllegalStateException {
+        Cactus populator = (Cactus) new WorldGenCactus();
+        populator.setCactiPerChunk(this.count);
+        return populator;
+    }
 
 }

@@ -1,7 +1,7 @@
 /*
  * This file is part of Sponge, licensed under the MIT License (MIT).
  *
- * Copyright (c) SpongePowered <https://www.spongepowered.org>
+ * Copyright (c) SpongePowered.org <http://www.spongepowered.org>
  * Copyright (c) contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,23 +22,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.mixin.core.world.biome;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.gen.BiomeGenerator;
-import org.spongepowered.api.world.gen.GeneratorPopulator;
+import net.minecraft.world.biome.BiomeGenJungle;
+import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.common.configuration.SpongeConfig;
+@Mixin(BiomeGenJungle.class)
+public abstract class MixinBiomeGenJungle extends MixinBiomeGenBase {
 
-public interface IMixinWorld extends IPopulatorOwner {
-
-    SpongeConfig<SpongeConfig.WorldConfig> getWorldConfig();
-
-    void setWorldInfo(WorldInfo worldInfo);
-
-    void updateWorldGenerator();
-    
-    IChunkProvider createChunkProvider(net.minecraft.world.World world, GeneratorPopulator generatorPopulator, BiomeGenerator biomeGenerator);
-
+    @Override
+    protected void buildPopulators() {
+        super.buildPopulators();
+        //this.populators.add(new MelonPopulator());
+        //this.populators.add(new VinesPopulator());
+    }
 }

@@ -22,23 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.world.gen.builders;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.gen.BiomeGenerator;
-import org.spongepowered.api.world.gen.GeneratorPopulator;
+import net.minecraft.world.gen.feature.WorldGenDesertWells;
 
-import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.common.configuration.SpongeConfig;
+import static com.google.common.base.Preconditions.checkArgument;
+import org.spongepowered.api.world.gen.populator.DesertWell;
+import org.spongepowered.api.world.gen.populator.DesertWell.Builder;
 
-public interface IMixinWorld extends IPopulatorOwner {
+public class DesertWellBuilder implements DesertWell.Builder {
 
-    SpongeConfig<SpongeConfig.WorldConfig> getWorldConfig();
+    private double p;
 
-    void setWorldInfo(WorldInfo worldInfo);
+    public DesertWellBuilder() {
+        reset();
+    }
 
-    void updateWorldGenerator();
-    
-    IChunkProvider createChunkProvider(net.minecraft.world.World world, GeneratorPopulator generatorPopulator, BiomeGenerator biomeGenerator);
+    @Override
+    public Builder probability(double p) {
+        checkArgument(Double.isNaN(p), "The probability must be a number.");
+        checkArgument(Double.isInfinite(p), "The probability cannot be infinite.");
+        this.p = p;
+        return this;
+    }
+
+    @Override
+    public Builder reset() {
+        this.p = 0.001;
+        return this;
+    }
+
+    @Override
+    public DesertWell build() throws IllegalStateException {
+        DesertWell populator = (DesertWell) new WorldGenDesertWells();
+        populator.setSpawnProbability(this.p);
+        return populator;
+    }
 
 }

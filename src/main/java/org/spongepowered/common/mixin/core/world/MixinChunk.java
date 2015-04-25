@@ -24,8 +24,9 @@
  */
 package org.spongepowered.common.mixin.core.world;
 
-import static org.spongepowered.common.data.DataTransactionBuilder.builder;
+import com.google.common.collect.Lists;
 
+import static org.spongepowered.common.data.DataTransactionBuilder.builder;
 import com.flowpowered.math.vector.Vector2i;
 import com.flowpowered.math.vector.Vector3i;
 import com.google.common.base.Optional;
@@ -49,6 +50,7 @@ import org.spongepowered.api.util.PositionOutOfBoundsException;
 import org.spongepowered.api.util.annotation.NonnullByDefault;
 import org.spongepowered.api.util.gen.BiomeBuffer;
 import org.spongepowered.api.world.Chunk;
+import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.biome.BiomeType;
 import org.spongepowered.api.world.gen.GeneratorPopulator;
 import org.spongepowered.asm.mixin.Mixin;
@@ -121,13 +123,27 @@ public abstract class MixinChunk implements Chunk {
         // can be modified before light is calculated and that implementations
         // of IChunkProvider provided by mods will very likely still work well
 
-        List<GeneratorPopulator> populators = ((IMixinWorld) world).getGeneratorPopulators();
-        if (!populators.isEmpty()) {
-            FastChunkBuffer buffer = new FastChunkBuffer((net.minecraft.world.chunk.Chunk) (Object) this);
-            BiomeGenBase[] biomeArray = world.getWorldChunkManager().getBiomeGenAt(null, chunkX * 16, chunkZ * 16, 16, 16, true);
-            BiomeBuffer biomes = new ObjectArrayMutableBiomeBuffer(biomeArray, new Vector2i(chunkX * 16, chunkZ * 16), new Vector2i(16, 16));
+        List<GeneratorPopulator> genpop = ((IMixinWorld) world).getGeneratorPopulators();
+        List<GeneratorPopulator> biomegenpop = Lists.newArrayList();
 
-            for (GeneratorPopulator populator : populators) {
+        BiomeGenBase[] biomeArray = world.getWorldChunkManager().getBiomeGenAt(null, chunkX * 16, chunkZ * 16, 16, 16, true);
+        List<BiomeGenBase> encountered = Lists.newArrayList();
+        for (BiomeGenBase biome : biomeArray) {
+            if (encountered.contains(biome)) {
+                continue;
+            }
+            //TODO get from gen override
+            //biomegenpop.addAll(((BiomeType) biome).getGeneratorPopulators());
+            encountered.add(biome);
+        }
+
+        if (!genpop.isEmpty() || !biomegenpop.isEmpty()) {
+            FastChunkBuffer buffer = new FastChunkBuffer((net.minecraft.world.chunk.Chunk) (Object) this);
+            BiomeBuffer biomes = new ObjectArrayMutableBiomeBuffer(biomeArray, new Vector2i(chunkX * 16, chunkZ * 16), new Vector2i(16, 16));
+            for (GeneratorPopulator populator : biomegenpop) {
+                populator.populate((org.spongepowered.api.world.World) world, buffer, biomes);
+            }
+            for (GeneratorPopulator populator : genpop) {
                 populator.populate((org.spongepowered.api.world.World) world, buffer, biomes);
             }
         }

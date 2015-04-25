@@ -1,7 +1,7 @@
 /*
  * This file is part of Sponge, licensed under the MIT License (MIT).
  *
- * Copyright (c) SpongePowered <https://www.spongepowered.org>
+ * Copyright (c) SpongePowered.org <http://www.spongepowered.org>
  * Copyright (c) contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,23 +22,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.mixin.core.world.biome;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.gen.BiomeGenerator;
-import org.spongepowered.api.world.gen.GeneratorPopulator;
+import net.minecraft.world.biome.BiomeGenEnd;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.common.world.gen.populators.EndBiomeGeneratorPopulator;
 
-import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.common.configuration.SpongeConfig;
+@Mixin(BiomeGenEnd.class)
+public abstract class MixinBiomeGenEnd extends MixinBiomeGenBase {
 
-public interface IMixinWorld extends IPopulatorOwner {
+    /*
+     * Add in our end biome genpop which replaces the stone blocks from
+     * generation with end stone.
+     */
+    @Override
+    protected void buildPopulators() {
+        this.genpopulators.add(new EndBiomeGeneratorPopulator());
+        //this.populators.add(new EndSpikePopulator());
+        //this.populators.add(new EnderDragonPopulator());
 
-    SpongeConfig<SpongeConfig.WorldConfig> getWorldConfig();
-
-    void setWorldInfo(WorldInfo worldInfo);
-
-    void updateWorldGenerator();
-    
-    IChunkProvider createChunkProvider(net.minecraft.world.World world, GeneratorPopulator generatorPopulator, BiomeGenerator biomeGenerator);
-
+    }
 }

@@ -22,23 +22,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.mixin.core.world.biome;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.gen.BiomeGenerator;
-import org.spongepowered.api.world.gen.GeneratorPopulator;
+import net.minecraft.world.biome.BiomeGenDesert;
+import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.common.configuration.SpongeConfig;
+@Mixin(BiomeGenDesert.class)
+public abstract class MixinBiomeGenDesert extends MixinBiomeGenBase {
 
-public interface IMixinWorld extends IPopulatorOwner {
-
-    SpongeConfig<SpongeConfig.WorldConfig> getWorldConfig();
-
-    void setWorldInfo(WorldInfo worldInfo);
-
-    void updateWorldGenerator();
-    
-    IChunkProvider createChunkProvider(net.minecraft.world.World world, GeneratorPopulator generatorPopulator, BiomeGenerator biomeGenerator);
+    @Override
+    protected void buildPopulators() {
+        super.buildPopulators();
+        //this.populators.add(new DesertWellPopulator(1000));
+    }
 
 }

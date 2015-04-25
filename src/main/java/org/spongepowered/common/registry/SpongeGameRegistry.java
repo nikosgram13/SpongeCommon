@@ -24,8 +24,9 @@
  */
 package org.spongepowered.common.registry;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.spongepowered.common.world.gen.builders.SpongePopulatorFactory;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableList;
@@ -421,6 +422,8 @@ public abstract class SpongeGameRegistry implements GameRegistry {
     private final Map<String, WorldProperties> worldPropertiesNameMappings = Maps.newHashMap();
     private final Map<Integer, String> worldFolderDimensionIdMappings = Maps.newHashMap();
     public final Map<UUID, String> worldFolderUniqueIdMappings = Maps.newHashMap();
+    
+    private final SpongePopulatorFactory populatorFactory = new SpongePopulatorFactory();
 
     private final Map<String, NotePitch> notePitchMappings = Maps.newHashMap();
     private final Map<String, SkullType> skullTypeMappings = Maps.newHashMap();
@@ -1798,7 +1801,7 @@ public abstract class SpongeGameRegistry implements GameRegistry {
 
     @Override
     public PopulatorFactory getPopulatorFactory() {
-        throw new UnsupportedOperationException(); // TODO
+        return this.populatorFactory;
     }
 
     public void preInit() {

@@ -1,7 +1,7 @@
 /*
  * This file is part of Sponge, licensed under the MIT License (MIT).
  *
- * Copyright (c) SpongePowered <https://www.spongepowered.org>
+ * Copyright (c) SpongePowered.org <http://www.spongepowered.org>
  * Copyright (c) contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,23 +22,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.mixin.core.world.biome;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.gen.BiomeGenerator;
-import org.spongepowered.api.world.gen.GeneratorPopulator;
+import net.minecraft.world.biome.BiomeGenPlains;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.common.interfaces.IBiomeGenPlains;
 
-import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.common.configuration.SpongeConfig;
-
-public interface IMixinWorld extends IPopulatorOwner {
-
-    SpongeConfig<SpongeConfig.WorldConfig> getWorldConfig();
-
-    void setWorldInfo(WorldInfo worldInfo);
-
-    void updateWorldGenerator();
+@Mixin(BiomeGenPlains.class)
+public abstract class MixinBiomeGenPlains extends MixinBiomeGenBase implements IBiomeGenPlains {
     
-    IChunkProvider createChunkProvider(net.minecraft.world.World world, GeneratorPopulator generatorPopulator, BiomeGenerator biomeGenerator);
+    @Shadow protected boolean field_150628_aC;
 
+    @Override
+    protected void buildPopulators() {
+        //this.populators.add(new PlainsGrassPopulator());
+        super.buildPopulators();
+    }
+    
+    @Override
+    public boolean hasSunflowers() {
+        return this.field_150628_aC;
+    }
 }

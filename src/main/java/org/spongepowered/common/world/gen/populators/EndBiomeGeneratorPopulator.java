@@ -1,7 +1,7 @@
 /*
  * This file is part of Sponge, licensed under the MIT License (MIT).
  *
- * Copyright (c) SpongePowered <https://www.spongepowered.org>
+ * Copyright (c) SpongePowered.org <http://www.spongepowered.org>
  * Copyright (c) contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,23 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.world.gen.populators;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.gen.BiomeGenerator;
+import org.spongepowered.api.block.BlockState;
+import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.util.gen.BiomeBuffer;
+import org.spongepowered.api.util.gen.MutableBlockBuffer;
+import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.gen.GeneratorPopulator;
 
-import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.common.configuration.SpongeConfig;
+public class EndBiomeGeneratorPopulator implements GeneratorPopulator {
 
-public interface IMixinWorld extends IPopulatorOwner {
+    @Override
+    public void populate(World world, MutableBlockBuffer buffer, BiomeBuffer biomes) {
+        BlockState iblockstate = BlockTypes.END_STONE.getDefaultState();
+        for (int i = 0; i < 16; ++i) {
+            int x = i + buffer.getBlockMin().getX();
+            for (int j = 0; j < 16; ++j) {
+                int z = j + buffer.getBlockMin().getZ();
 
-    SpongeConfig<SpongeConfig.WorldConfig> getWorldConfig();
+                for (int l = 255; l >= 0; --l) {
+                    int y = l + buffer.getBlockMin().getY();
+                    BlockState iblockstate2 = buffer.getBlock(x, y, z);
 
-    void setWorldInfo(WorldInfo worldInfo);
+                    if (iblockstate2.getType() == BlockTypes.STONE) {
 
-    void updateWorldGenerator();
-    
-    IChunkProvider createChunkProvider(net.minecraft.world.World world, GeneratorPopulator generatorPopulator, BiomeGenerator biomeGenerator);
+                        buffer.setBlock(x, y, z, iblockstate);
+                    }
+                }
+            }
+        }
+    }
 
 }

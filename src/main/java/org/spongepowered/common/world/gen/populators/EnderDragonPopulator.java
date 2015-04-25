@@ -22,23 +22,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.world.gen.populators;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.gen.BiomeGenerator;
-import org.spongepowered.api.world.gen.GeneratorPopulator;
+import net.minecraft.util.BlockPos;
 
-import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.common.configuration.SpongeConfig;
+import net.minecraft.world.World;
+import net.minecraft.entity.boss.EntityDragon;
+import org.spongepowered.api.world.Chunk;
+import org.spongepowered.api.world.gen.Populator;
 
-public interface IMixinWorld extends IPopulatorOwner {
+import java.util.Random;
 
-    SpongeConfig<SpongeConfig.WorldConfig> getWorldConfig();
+public class EnderDragonPopulator implements Populator {
 
-    void setWorldInfo(WorldInfo worldInfo);
+    @Override
+    public void populate(Chunk chunk, Random random) {
+        World world = (World) chunk.getWorld();
+        BlockPos pos = new BlockPos(chunk.getBlockMin().getX(), chunk.getBlockMin().getY(), chunk.getBlockMin().getZ());
+        if (pos.getX() == 0 && pos.getZ() == 0) {
+            EntityDragon entitydragon = new EntityDragon(world);
+            entitydragon.setLocationAndAngles(0.0D, 128.0D, 0.0D, random.nextFloat() * 360.0F, 0.0F);
+            world.spawnEntityInWorld(entitydragon);
+        }
 
-    void updateWorldGenerator();
-    
-    IChunkProvider createChunkProvider(net.minecraft.world.World world, GeneratorPopulator generatorPopulator, BiomeGenerator biomeGenerator);
+    }
 
 }

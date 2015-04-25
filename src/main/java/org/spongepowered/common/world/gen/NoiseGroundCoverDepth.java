@@ -22,23 +22,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.world.gen;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.gen.BiomeGenerator;
-import org.spongepowered.api.world.gen.GeneratorPopulator;
+import java.util.Random;
 
-import net.minecraft.world.storage.WorldInfo;
-import org.spongepowered.common.configuration.SpongeConfig;
+import org.spongepowered.api.util.SeededVariableAmount;
 
-public interface IMixinWorld extends IPopulatorOwner {
+public class NoiseGroundCoverDepth extends SeededVariableAmount<Double> {
 
-    SpongeConfig<SpongeConfig.WorldConfig> getWorldConfig();
-
-    void setWorldInfo(WorldInfo worldInfo);
-
-    void updateWorldGenerator();
-    
-    IChunkProvider createChunkProvider(net.minecraft.world.World world, GeneratorPopulator generatorPopulator, BiomeGenerator biomeGenerator);
+    @Override
+    public double getAmount(Random rand, Double seed) {
+        return (int) (seed / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
+    }
 
 }
