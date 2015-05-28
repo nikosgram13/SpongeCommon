@@ -28,9 +28,17 @@ import org.spongepowered.common.configuration.SpongeConfig;
 
 public interface IMixinWorldProvider {
 
+    String getSaveFolder();
+
+    void setDimension(int dim);
+
     void setDimensionConfig(SpongeConfig<SpongeConfig.DimensionConfig> config);
 
     SpongeConfig<SpongeConfig.DimensionConfig> getDimensionConfig();
 
     int getAverageGroundLevel();
+
+    int getHeight();
+
+    int getBuildHeight();
 }

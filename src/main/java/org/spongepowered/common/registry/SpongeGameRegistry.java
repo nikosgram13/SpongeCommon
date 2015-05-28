@@ -54,6 +54,7 @@ import net.minecraft.world.WorldProviderEnd;
 import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldSettings;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.spongepowered.api.CatalogType;
@@ -216,6 +217,8 @@ import org.spongepowered.api.util.rotation.Rotations;
 import org.spongepowered.api.world.Dimension;
 import org.spongepowered.api.world.DimensionType;
 import org.spongepowered.api.world.DimensionTypes;
+import org.spongepowered.api.world.GeneratorType;
+import org.spongepowered.api.world.GeneratorTypes;
 import org.spongepowered.api.world.WorldBuilder;
 import org.spongepowered.api.world.biome.BiomeType;
 import org.spongepowered.api.world.biome.BiomeTypes;
@@ -326,6 +329,9 @@ import org.spongepowered.common.weather.SpongeWeather;
 import org.spongepowered.common.world.SpongeDimensionType;
 import org.spongepowered.common.world.SpongeWorldBuilder;
 import org.spongepowered.common.world.gen.WorldGeneratorRegistry;
+import org.spongepowered.common.world.type.SpongeWorldTypeEnd;
+import org.spongepowered.common.world.type.SpongeWorldTypeNether;
+import org.spongepowered.common.world.type.SpongeWorldTypeOverworld;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -433,6 +439,8 @@ public abstract class SpongeGameRegistry implements GameRegistry {
     private final Map<String, Art> artMappings = Maps.newHashMap();
     private final Map<String, EntityType> entityTypeMappings = Maps.newHashMap();
 
+    private final Map<String, GeneratorType> generatorTypeMappings = Maps.newHashMap();
+
     private static final ImmutableMap<String, EntityInteractionType> entityInteractionTypeMappings =
             new ImmutableMap.Builder<String, EntityInteractionType>()
                     .put("ATTACK", new SpongeEntityInteractionType("ATTACK"))
@@ -503,6 +511,7 @@ public abstract class SpongeGameRegistry implements GameRegistry {
                     .put(WallType.class, ImmutableMap.<String, CatalogType>of()) // TODO
                     .put(Weather.class, ImmutableMap.<String, CatalogType>of()) // TODO
                     .put(WorldGeneratorModifier.class, this.worldGeneratorRegistry.viewModifiersMap())
+                    .put(GeneratorType.class, this.generatorTypeMappings)
                     .build();
     private final Map<Class<?>, Class<?>> builderMap = ImmutableMap.of(); // TODO FIGURE OUT HOW TO DO THIS!!?!
 
@@ -1746,6 +1755,15 @@ public abstract class SpongeGameRegistry implements GameRegistry {
         RegistryHelper.mapFields(RabbitTypes.class, SpongeEntityConstants.RABBIT_TYPES);
     }
 
+    public void setGeneratorTypes() {
+        this.generatorTypeMappings.put("DEFAULT", (GeneratorType) WorldType.DEFAULT);
+        this.generatorTypeMappings.put("FLAT", (GeneratorType) WorldType.FLAT);
+        this.generatorTypeMappings.put("DEBUG", (GeneratorType) WorldType.DEBUG_WORLD);
+        this.generatorTypeMappings.put("NETHER", (GeneratorType) new SpongeWorldTypeNether());
+        this.generatorTypeMappings.put("END", (GeneratorType) new SpongeWorldTypeEnd());
+        this.generatorTypeMappings.put("OVERWORLD", (GeneratorType) new SpongeWorldTypeOverworld());
+        RegistryHelper.mapFields(GeneratorTypes.class, this.generatorTypeMappings);
+    }
 
     private SpongeEntityType newEntityTypeFromName(String spongeName, String mcName) {
         return new SpongeEntityType((Integer) EntityList.stringToIDMapping.get(mcName), spongeName,
@@ -1827,6 +1845,7 @@ public abstract class SpongeGameRegistry implements GameRegistry {
         setNotePitches();
         setBannerPatternShapes();
         setEntityInteractionTypes();
+        setGeneratorTypes();
     }
 
     public void postInit() {

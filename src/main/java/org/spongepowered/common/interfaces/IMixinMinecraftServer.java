@@ -24,10 +24,13 @@
  */
 package org.spongepowered.common.interfaces;
 
+import net.minecraft.world.chunk.storage.AnvilSaveHandler;
 
-public interface IMixinEntityPlayerMP {
+import java.util.Hashtable;
 
-    void reset();
+public interface IMixinMinecraftServer {
 
-    boolean isCustomPlayer();
+    Hashtable<Integer, long[]> getWorldTickTimes();
+
+    AnvilSaveHandler getHandler(String worldName);
 }

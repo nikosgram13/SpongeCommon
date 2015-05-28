@@ -22,12 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.world.type;
 
+import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkProviderHell;
 
-public interface IMixinEntityPlayerMP {
+public class SpongeWorldTypeNether extends SpongeWorldType {
 
-    void reset();
+    public SpongeWorldTypeNether() {
+        super("NETHER");
+    }
 
-    boolean isCustomPlayer();
+    @Override
+    public net.minecraft.world.chunk.IChunkProvider getChunkGenerator(World world, String generatorOptions) {
+        return new ChunkProviderHell(world, world.getWorldInfo().isMapFeaturesEnabled(), world.getSeed());
+    }
 }

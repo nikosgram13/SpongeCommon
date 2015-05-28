@@ -31,6 +31,7 @@ import static org.spongepowered.common.entity.CombatHelper.getNewTracker;
 
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Optional;
+import io.netty.util.AttributeKey;
 import net.minecraft.entity.Entity;
 import com.google.common.base.Preconditions;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -305,6 +306,11 @@ public abstract class MixinEntityPlayerMP extends MixinEntityPlayer implements P
         }
 
         this.keepsLevel = false;
+    }
+
+    @Override
+    public boolean isCustomPlayer() {
+        return this.playerNetServerHandler.getNetworkManager().channel.attr(AttributeKey.<Boolean>valueOf("fml:hasMarker")).get();
     }
 
     @Override

@@ -50,7 +50,6 @@ public abstract class MixinWorldType implements GeneratorType, IMixinWorldType {
     @Shadow private String worldType;
     @Shadow private int worldTypeId;
 
-
     @Override
     public String getId() {
         return this.worldType;
@@ -114,7 +113,7 @@ public abstract class MixinWorldType implements GeneratorType, IMixinWorldType {
         final int prime = 31;
         int result = 1;
         result = prime * result + this.getName().hashCode();
-        result = prime * result + worldTypeId;
+        result = prime * result + this.worldTypeId;
         return result;
     }
 
@@ -124,16 +123,9 @@ public abstract class MixinWorldType implements GeneratorType, IMixinWorldType {
             return false;
         }
 
-        WorldType other = (WorldType) obj;
-        if (!this.getName().equals(other.getWorldTypeName())) {
-            return false;
-        }
+        final WorldType other = (WorldType) obj;
+        return this.getName().equals(other.getWorldTypeName()) && this.worldTypeId == other.getWorldTypeID();
 
-        if (this.worldTypeId != other.getWorldTypeID()) {
-            return false;
-        }
-
-        return true;
     }
 
     @Override

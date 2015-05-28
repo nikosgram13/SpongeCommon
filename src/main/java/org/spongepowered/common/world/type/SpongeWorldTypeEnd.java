@@ -22,13 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.world.type;
 
-import net.minecraft.world.chunk.storage.AnvilSaveHandler;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkProviderEnd;
 
-public interface IMixinServer {
+public class SpongeWorldTypeEnd extends SpongeWorldType {
 
-    AnvilSaveHandler getHandler(String worldName);
+    public SpongeWorldTypeEnd() {
+        super("END");
+    }
 
-    void initialSpongeWorldChunkLoad();
+    @Override
+    public net.minecraft.world.chunk.IChunkProvider getChunkGenerator(World world, String generatorOptions) {
+        return new ChunkProviderEnd(world, world.getSeed());
+    }
 }
