@@ -24,6 +24,8 @@
  */
 package org.spongepowered.common.world.gen.builders;
 
+import org.spongepowered.common.interfaces.gen.IWorldGenDungeons;
+
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import org.spongepowered.api.data.manipulator.MobSpawnerData;
 import org.spongepowered.api.util.VariableAmount;
@@ -33,7 +35,6 @@ import org.spongepowered.api.util.weighted.WeightedItem;
 import org.spongepowered.api.world.gen.populator.Dungeon;
 import org.spongepowered.api.world.gen.populator.Dungeon.Builder;
 import org.spongepowered.common.Sponge;
-import org.spongepowered.common.interfaces.IWorldGenDungeons;
 
 import java.util.Collection;
 

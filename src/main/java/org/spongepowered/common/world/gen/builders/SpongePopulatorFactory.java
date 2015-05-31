@@ -38,13 +38,12 @@ import org.spongepowered.api.world.gen.populator.Glowstone;
 import org.spongepowered.api.world.gen.populator.HugeTree;
 import org.spongepowered.api.world.gen.populator.IcePath;
 import org.spongepowered.api.world.gen.populator.IceSpike;
-import org.spongepowered.api.world.gen.populator.JungleBush;
 import org.spongepowered.api.world.gen.populator.Lake;
 import org.spongepowered.api.world.gen.populator.Melons;
 import org.spongepowered.api.world.gen.populator.Ore;
 import org.spongepowered.api.world.gen.populator.Pumpkin;
-import org.spongepowered.api.world.gen.populator.RandomFire;
-import org.spongepowered.api.world.gen.populator.RandomLiquids;
+import org.spongepowered.api.world.gen.populator.RandomBlock;
+import org.spongepowered.api.world.gen.populator.RandomObject;
 import org.spongepowered.api.world.gen.populator.Reeds;
 import org.spongepowered.api.world.gen.populator.SeaFloor;
 import org.spongepowered.api.world.gen.populator.Shrub;
@@ -90,8 +89,7 @@ public class SpongePopulatorFactory implements PopulatorFactory {
 
     @Override
     public Flowers.Builder createFlowerPopulator() {
-        // TODO Auto-generated method stub
-        return null;
+        return new FlowersBuilder();
     }
 
     @Override
@@ -125,12 +123,6 @@ public class SpongePopulatorFactory implements PopulatorFactory {
     }
 
     @Override
-    public JungleBush.Builder createJungleBushPopulator() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public Lake.Builder createLakePopulator() {
         // TODO Auto-generated method stub
         return null;
@@ -155,13 +147,13 @@ public class SpongePopulatorFactory implements PopulatorFactory {
     }
 
     @Override
-    public RandomFire.Builder createRandomFirePopulator() {
+    public RandomBlock.Builder createRandomBlockPopulator() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public RandomLiquids.Builder createRandomLiquidsPopulator() {
+    public RandomObject.Builder createRandomObjectPopulator() {
         // TODO Auto-generated method stub
         return null;
     }

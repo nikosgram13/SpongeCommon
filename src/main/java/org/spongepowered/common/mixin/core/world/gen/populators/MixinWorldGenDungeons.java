@@ -24,7 +24,7 @@
  */
 package org.spongepowered.common.mixin.core.world.gen.populators;
 
-import org.spongepowered.common.interfaces.IWorldGenDungeons;
+import org.spongepowered.common.interfaces.gen.IWorldGenDungeons;
 
 import com.flowpowered.math.vector.Vector3i;
 import net.minecraft.block.material.Material;

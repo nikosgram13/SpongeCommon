@@ -24,8 +24,10 @@
  */
 package org.spongepowered.common.mixin.core.world.gen;
 
-import org.spongepowered.common.world.gen.populators.AnimalPopulator;
+import org.spongepowered.common.interfaces.gen.IFlaggedPopulator;
 
+import org.spongepowered.common.interfaces.gen.IPopulatorOwner;
+import org.spongepowered.common.world.gen.populators.AnimalPopulator;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockFalling;
@@ -57,9 +59,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.common.Sponge;
-import org.spongepowered.common.interfaces.IFlaggedPopulator;
 import org.spongepowered.common.interfaces.IMixinWorld;
-import org.spongepowered.common.interfaces.IPopulatorOwner;
 
 import java.util.List;
 import java.util.Random;

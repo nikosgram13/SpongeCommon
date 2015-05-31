@@ -24,10 +24,11 @@
  */
 package org.spongepowered.common.mixin.core.world.biome;
 
+import org.spongepowered.common.interfaces.gen.IBiomeGenPlains;
+
 import net.minecraft.world.biome.BiomeGenPlains;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.common.interfaces.IBiomeGenPlains;
 
 @Mixin(BiomeGenPlains.class)
 public abstract class MixinBiomeGenPlains extends MixinBiomeGenBase implements IBiomeGenPlains {

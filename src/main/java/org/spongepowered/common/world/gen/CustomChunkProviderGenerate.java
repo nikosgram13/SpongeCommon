@@ -24,14 +24,14 @@
  */
 package org.spongepowered.common.world.gen;
 
+import org.spongepowered.common.interfaces.gen.IFlaggedPopulator;
+
 import com.google.common.collect.Lists;
 import org.spongepowered.api.event.SpongeEventFactory;
 import org.spongepowered.api.world.biome.BiomeType;
 import org.spongepowered.api.world.gen.Populator;
 import org.spongepowered.common.Sponge;
-import org.spongepowered.common.interfaces.IFlaggedPopulator;
 import org.spongepowered.common.interfaces.IMixinWorld;
-
 import com.flowpowered.math.vector.Vector2i;
 import com.google.common.base.Preconditions;
 import net.minecraft.block.BlockFalling;
@@ -139,7 +139,7 @@ public class CustomChunkProviderGenerate implements IChunkProvider {
 
         // Generate blocks
         ChunkPrimer chunkprimer = new ChunkPrimer();
-        ChunkPrimerBuffer buffer = new ChunkPrimerBuffer(chunkprimer, chunkZ, chunkZ);
+        ChunkPrimerBuffer buffer = new ChunkPrimerBuffer(chunkprimer, chunkX, chunkZ);
         this.generatorPopulator.populate((org.spongepowered.api.world.World) this.world, buffer, this.cachedBiomes.getImmutableClone());
 
         // Assemble chunk

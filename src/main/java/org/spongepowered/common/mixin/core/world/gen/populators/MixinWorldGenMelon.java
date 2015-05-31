@@ -1,5 +1,5 @@
 /*
- * This file is part of Sponge, licensed under the MIT License (MIT).
+ * This file is part of SpongeAPI, licensed under the MIT License (MIT).
  *
  * Copyright (c) SpongePowered <https://www.spongepowered.org>
  * Copyright (c) contributors
@@ -24,13 +24,14 @@
  */
 package org.spongepowered.common.mixin.core.world.gen.populators;
 
-import com.flowpowered.math.vector.Vector3i;
-import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenDesertWells;
-import net.minecraft.world.gen.feature.WorldGenerator;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.gen.feature.WorldGenMelon;
+import org.spongepowered.api.util.VariableAmount;
 import org.spongepowered.api.world.Chunk;
-import org.spongepowered.api.world.gen.populator.DesertWell;
+import org.spongepowered.api.world.gen.populator.Melons;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,39 +39,44 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Random;
 
-@Mixin(WorldGenDesertWells.class)
-public abstract class MixinWorldGenDesertWells extends WorldGenerator implements DesertWell
-{
+@Mixin(WorldGenMelon.class)
+public class MixinWorldGenMelon implements Melons {
+    
+    private VariableAmount count;
 
-    private double spawnProbability;
-
-    @Inject(method = "<init>(I)V", at = @At("RETURN"))
-    public void onConstructed(int type, CallbackInfo ci) {
-        this.spawnProbability = 0.001;
+    @Inject(method = "<init>()V", at = @At("RETURN"))
+    public void onConstructed(CallbackInfo ci) {
+        this.count = VariableAmount.fixed(10);
     }
 
     @Override
     public void populate(Chunk chunk, Random random) {
         World world = (World) chunk.getWorld();
-        Vector3i min = chunk.getBlockMin();
-        BlockPos chunkPos = new BlockPos(min.getX(), min.getY(), min.getZ());
-        
-        if (random.nextDouble() < this.spawnProbability)
+        BlockPos position = new BlockPos(chunk.getBlockMin().getX(), chunk.getBlockMin().getY(), chunk.getBlockMin().getZ());
+        int n = this.count.getFlooredAmount(random);
+        int x = random.nextInt(16) + 8;
+        int z = random.nextInt(16) + 8;
+        int y = random.nextInt(Math.min(world.getHeight(position.add(x, 0, z)).getY() * 2, 255));
+        position = position.add(x, y, z);
+        for (int i = 0; i < n; ++i)
         {
-            int x = random.nextInt(16) + 8;
-            int z = random.nextInt(16) + 8;
-            generate(world, random, world.getHeight(chunkPos.add(x, 0, z)).up());
+            BlockPos blockpos1 = position.add(random.nextInt(8) - random.nextInt(8), random.nextInt(4) - random.nextInt(4), random.nextInt(8) - random.nextInt(8));
+
+            if (Blocks.melon_block.canPlaceBlockAt(world, blockpos1) && world.getBlockState(blockpos1.down()).getBlock() == Blocks.grass)
+            {
+                world.setBlockState(blockpos1, Blocks.melon_block.getDefaultState(), 2);
+            }
         }
     }
 
     @Override
-    public double getSpawnProbability() {
-        return this.spawnProbability;
+    public VariableAmount getMelonsPerChunk() {
+        return this.count;
     }
 
     @Override
-    public void setSpawnProbability(double p) {
-        this.spawnProbability = p;
+    public void setMelonsPerChunk(VariableAmount count) {
+        this.count = count;
     }
 
 }

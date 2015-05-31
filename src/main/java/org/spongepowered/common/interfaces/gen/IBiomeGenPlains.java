@@ -22,16 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.interfaces.gen;
 
-import com.google.common.collect.ImmutableList;
-import org.spongepowered.api.world.gen.GeneratorPopulator;
-import org.spongepowered.api.world.gen.Populator;
 
-public interface IPopulatorOwner {
-
-    ImmutableList<Populator> getPopulators();
-
-    ImmutableList<GeneratorPopulator> getGeneratorPopulators();
+public interface IBiomeGenPlains {
+    
+    boolean hasSunflowers();
 
 }

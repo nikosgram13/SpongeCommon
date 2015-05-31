@@ -24,6 +24,8 @@
  */
 package org.spongepowered.common.mixin.core.world.gen;
 
+import org.spongepowered.common.interfaces.gen.IFlaggedPopulator;
+
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -31,7 +33,6 @@ import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenVillage;
 import org.spongepowered.api.world.Chunk;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.common.interfaces.IFlaggedPopulator;
 
 import java.util.List;
 import java.util.Random;

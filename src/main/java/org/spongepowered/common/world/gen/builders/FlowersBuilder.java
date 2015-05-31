@@ -43,8 +43,13 @@ public class FlowersBuilder implements Flowers.Builder {
 
 	@Override
 	public Builder types(Collection<WeightedObject<PlantType>> types) {
-		// TODO Auto-generated method stub
-		return this;
+        this.flowers.clear();
+        for(WeightedObject<PlantType> type: types) {
+            if(type != null && type.get() != null) {
+                this.flowers.add(type);
+            }
+        }
+        return this;
 	}
 
 	@Override

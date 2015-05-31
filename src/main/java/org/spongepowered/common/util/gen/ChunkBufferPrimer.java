@@ -43,8 +43,7 @@ public class ChunkBufferPrimer extends ChunkPrimer {
 
     @Override
     public IBlockState getBlockState(int x, int y, int z) {
-        return (IBlockState) this.buffer.getBlock(x + this.buffer.getBlockMin().getX(), y + this.buffer.getBlockMin().getY(), z
-                + this.buffer.getBlockMin().getZ());
+        return (IBlockState) this.buffer.getBlock(x, y, z);
     }
 
     @Override
@@ -54,8 +53,7 @@ public class ChunkBufferPrimer extends ChunkPrimer {
 
     @Override
     public void setBlockState(int x, int y, int z, IBlockState state) {
-        this.buffer.setBlock(x + this.buffer.getBlockMin().getX(), y + this.buffer.getBlockMin().getY(), z + this.buffer.getBlockMin().getZ(),
-                (BlockState) state);
+        this.buffer.setBlock(x, y, z, (BlockState) state);
     }
 
     @Override

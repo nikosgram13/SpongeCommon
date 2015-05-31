@@ -22,17 +22,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.interfaces.gen;
 
-import net.minecraft.world.chunk.IChunkProvider;
-import org.spongepowered.api.world.Chunk;
+import com.google.common.collect.ImmutableList;
+import org.spongepowered.api.world.gen.GeneratorPopulator;
 import org.spongepowered.api.world.gen.Populator;
 
-import java.util.List;
-import java.util.Random;
+public interface IPopulatorOwner {
 
-public interface IFlaggedPopulator extends Populator {
+    ImmutableList<Populator> getPopulators();
 
-    void populate(IChunkProvider provider, Chunk chunk, Random rand, List<String> flags);
+    ImmutableList<GeneratorPopulator> getGeneratorPopulators();
 
 }

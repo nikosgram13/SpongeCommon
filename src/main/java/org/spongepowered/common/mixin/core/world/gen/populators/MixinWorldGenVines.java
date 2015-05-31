@@ -1,5 +1,5 @@
 /*
- * This file is part of Sponge, licensed under the MIT License (MIT).
+ * This file is part of SpongeAPI, licensed under the MIT License (MIT).
  *
  * Copyright (c) SpongePowered <https://www.spongepowered.org>
  * Copyright (c) contributors
@@ -22,11 +22,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.interfaces;
+package org.spongepowered.common.mixin.core.world.gen.populators;
 
+import net.minecraft.world.World;
 
-public interface IBiomeGenPlains {
-    
-    boolean hasSunflowers();
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.gen.feature.WorldGenVines;
+import net.minecraft.world.gen.feature.WorldGenerator;
+import org.spongepowered.api.world.Chunk;
+import org.spongepowered.api.world.gen.populator.Vines;
+import org.spongepowered.asm.mixin.Mixin;
+
+import java.util.Random;
+
+@Mixin(WorldGenVines.class)
+public abstract class MixinWorldGenVines extends WorldGenerator implements Vines {
+
+    @Override
+    public void populate(Chunk chunk, Random random) {
+        BlockPos position = new BlockPos(chunk.getBlockMin().getX(), chunk.getBlockMin().getY(), chunk.getBlockMin().getZ());
+        int x, z;
+        for(int i = 0; i < 50; i++) {
+            x = random.nextInt(16) + 8;
+            z = random.nextInt(16) + 8;
+            generate((World) chunk.getWorld(), random, position.add(x, 128, z));
+        }
+    }
 
 }

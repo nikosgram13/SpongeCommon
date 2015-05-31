@@ -1,5 +1,5 @@
 /*
- * This file is part of Sponge, licensed under the MIT License (MIT).
+ * This file is part of SpongeAPI, licensed under the MIT License (MIT).
  *
  * Copyright (c) SpongePowered <https://www.spongepowered.org>
  * Copyright (c) contributors
@@ -24,13 +24,13 @@
  */
 package org.spongepowered.common.mixin.core.world.gen.populators;
 
-import com.flowpowered.math.vector.Vector3i;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenDesertWells;
+import net.minecraft.world.gen.feature.WorldGenWaterlily;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import org.spongepowered.api.util.VariableAmount;
 import org.spongepowered.api.world.Chunk;
-import org.spongepowered.api.world.gen.populator.DesertWell;
+import org.spongepowered.api.world.gen.populator.WaterLily;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,39 +38,38 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Random;
 
-@Mixin(WorldGenDesertWells.class)
-public abstract class MixinWorldGenDesertWells extends WorldGenerator implements DesertWell
-{
+@Mixin(WorldGenWaterlily.class)
+public abstract class MixinWorldGenWaterLily extends WorldGenerator implements WaterLily {
 
-    private double spawnProbability;
+    private VariableAmount count;
 
-    @Inject(method = "<init>(I)V", at = @At("RETURN"))
-    public void onConstructed(int type, CallbackInfo ci) {
-        this.spawnProbability = 0.001;
+    @Inject(method = "<init>()V", at = @At("RETURN"))
+    public void onConstructed(CallbackInfo ci) {
+        this.count = VariableAmount.fixed(4);
     }
 
     @Override
     public void populate(Chunk chunk, Random random) {
+        int n = this.count.getFlooredAmount(random);
+        BlockPos position = new BlockPos(chunk.getBlockMin().getX(), chunk.getBlockMin().getY(), chunk.getBlockMin().getZ());
         World world = (World) chunk.getWorld();
-        Vector3i min = chunk.getBlockMin();
-        BlockPos chunkPos = new BlockPos(min.getX(), min.getY(), min.getZ());
-        
-        if (random.nextDouble() < this.spawnProbability)
-        {
-            int x = random.nextInt(16) + 8;
-            int z = random.nextInt(16) + 8;
-            generate(world, random, world.getHeight(chunkPos.add(x, 0, z)).up());
+        int x, z;
+
+        for (int i = 0; i < n;) {
+            x = random.nextInt(16) + 8;
+            z = random.nextInt(16) + 8;
+            generate(world, random, world.getHeight(position.add(x, 0, z)));
         }
     }
 
     @Override
-    public double getSpawnProbability() {
-        return this.spawnProbability;
+    public VariableAmount getWaterLilyPerChunk() {
+        return this.count;
     }
 
     @Override
-    public void setSpawnProbability(double p) {
-        this.spawnProbability = p;
+    public void setWaterLilyPerChunk(VariableAmount count) {
+        this.count = count;
     }
 
 }
